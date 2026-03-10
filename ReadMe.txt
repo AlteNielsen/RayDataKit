@@ -73,3 +73,11 @@ T Access<T>(int key) where T : struct, RayDataStruct
 各データ構造体にはSave()メソッドが存在します。
 中身は完全に自由で、Jsonやcsvなど、皆様思い思いの形式で情報を保存することができます。
 マネージャーに存在するSave()メソッドを呼び出すことで、全てのデータ構造体のSave()を動かすことができます。ご活用ください。
+
+☆ScriptableObject対応版について
+RayAbstractSOManagerとRaySOStructを追加しました。
+float → ScriptableObject
+RayAbstractDataManager → RayAbstractSOManager
+RayDataStruct → RaySOStruct
+という対応関係になっています。
+使い方はSave()メソッドが存在しない以外は全く変更ありません。
