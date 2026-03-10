@@ -8,14 +8,14 @@ namespace Ray.Data.SO
     public abstract class RayAbstractSOManager : MonoBehaviour
     {
         private ScriptableObject[] masterBuffer;
-        private RaySOStruct[] dataInterfaces;
+        private RaySOChunk[] dataInterfaces;
         private int[] offsets;
 
         private List<ScriptableObject[]> datalist = new();
         private bool RegisterSwitch;
         private int dICounter;
 
-        public T Access<T>(int key) where T : struct, RaySOStruct
+        public T Access<T>(int key) where T : RaySOChunk
         {
             return (T)dataInterfaces[key];
         }
@@ -24,7 +24,7 @@ namespace Ray.Data.SO
         {
             RegisterSwitch = false;
             StructRegistry();
-            dataInterfaces = new RaySOStruct[datalist.Count];
+            dataInterfaces = new RaySOChunk[datalist.Count];
             RegisterSwitch = true;
             StructRegistry();
             CompileData();
@@ -32,7 +32,7 @@ namespace Ray.Data.SO
 
         protected abstract void StructRegistry();
 
-        protected void Register<T>() where T : struct, RaySOStruct
+        protected void Register<T>() where T : RaySOChunk, new()
         {
             if (!RegisterSwitch)
             {
@@ -68,10 +68,10 @@ namespace Ray.Data.SO
         }
     }
 
-    public interface RaySOStruct
+    public abstract class RaySOChunk
     {
         public ReadOnlyMemory<ScriptableObject> data { get; set; }
 
-        public ScriptableObject[] Load();
+        public abstract ScriptableObject[] Load();
     }
 }

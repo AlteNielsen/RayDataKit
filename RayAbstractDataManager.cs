@@ -7,9 +7,8 @@ namespace Ray.Data
 {
     public abstract class RayAbstractDataManager : MonoBehaviour
     {
-        public static RayAbstractDataManager Instance;
         private float[] masterBuffer;
-        private RayDataStruct[] dataInterfaces;
+        private RayDataChunk[] dataInterfaces;
         private int[] offsets;
 
         private List<float[]> datalist = new();
@@ -26,7 +25,7 @@ namespace Ray.Data
             Array.Copy(values, 0, masterBuffer, offsets[selector], values.Length);
         }
 
-        public T Access<T>(int key) where T : struct, RayDataStruct
+        public T Access<T>(int key) where T : RayDataChunk
         {
             return (T)dataInterfaces[key];
         }
@@ -41,17 +40,9 @@ namespace Ray.Data
 
         void Awake()
         {
-            if(Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(this);
-            }
             RegisterSwitch = false;
             StructRegistry();
-            dataInterfaces = new RayDataStruct[datalist.Count];
+            dataInterfaces = new RayDataChunk[datalist.Count];
             RegisterSwitch = true;
             StructRegistry();
             CompileData();
@@ -59,7 +50,7 @@ namespace Ray.Data
 
         protected abstract void StructRegistry();
 
-        protected void Register<T>() where T : struct, RayDataStruct
+        protected void Register<T>() where T : RayDataChunk, new()
         {
             if(!RegisterSwitch)
             {
@@ -95,11 +86,11 @@ namespace Ray.Data
         }
     }
 
-    public interface RayDataStruct
+    public abstract class RayDataChunk
     {
         public ReadOnlyMemory<float> data { get; set; }
 
-        public void Save();
-        public float[] Load();
+        public abstract void Save();
+        public abstract float[] Load();
     }
 }
