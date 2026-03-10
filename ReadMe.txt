@@ -80,4 +80,6 @@ float → ScriptableObject
 RayAbstractDataManager → RayAbstractSOManager
 RayDataStruct → RaySOStruct
 という対応関係になっています。
-使い方はSave()メソッドが存在しない以外は全く変更ありません。
+使い方の変更点としましては、
+Save、GetData、SetDataメソッドが存在しません。
+それ以外は変更ありません。

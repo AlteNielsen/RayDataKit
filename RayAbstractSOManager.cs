@@ -15,27 +15,9 @@ namespace Ray.Data.SO
         private bool RegisterSwitch;
         private int dICounter;
 
-        public void GetData(int selector, ScriptableObject[] frame)
-        {
-            Array.Copy(masterBuffer, offsets[selector], frame, 0, frame.Length);
-        }
-
-        public void SetData(int selector, ScriptableObject[] values)
-        {
-            Array.Copy(values, 0, masterBuffer, offsets[selector], values.Length);
-        }
-
         public T Access<T>(int key) where T : struct, RaySOStruct
         {
             return (T)dataInterfaces[key];
-        }
-
-        protected void Save()
-        {
-            for (int i = 0; i < dataInterfaces.Length; i++)
-            {
-                dataInterfaces[i].Save();
-            }
         }
 
         void Awake()
@@ -90,7 +72,6 @@ namespace Ray.Data.SO
     {
         public ReadOnlyMemory<ScriptableObject> data { get; set; }
 
-        public void Save();
         public ScriptableObject[] Load();
     }
 }
